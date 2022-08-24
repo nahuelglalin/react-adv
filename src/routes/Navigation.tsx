@@ -1,41 +1,56 @@
+import { Suspense } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { Routes, Route, NavLink, Navigate } from 'react-router-dom';
-import { LazyPage1, LazyPage2, LazyPage3 } from "../01-lazyload/pages";
+import { routes } from "./routes";//Aca estan  todas las rutas de mi App.
 
 import logo from '../logo.svg';
+
+
+
 
 //Manejo de Rutas con React Router Dom v6
 export const Navigation = () => {
   return (
-    <BrowserRouter>
-      <div className="main-layout">
-        <nav>
-          <img src={logo} alt="React Logo" />
+    <Suspense fallback={<span>Loading...</span>}>{/*Ver aclaraciones*/}
+      <BrowserRouter>
+        <div className="main-layout">
+          <nav>
+            <img src={logo} alt="React Logo" />
 
-          <ul>
-            <li>
-              <NavLink to="/lazy1" className={({ isActive }) => isActive ? 'nav-active' : ''} >Lazy1</NavLink>
-            </li>
-            <li>
-              <NavLink to="/lazy2" className={({ isActive }) => isActive ? 'nav-active' : ''} >Lazy2</NavLink>
-            </li>
-            <li>
-              <NavLink to="/lazy3" className={({ isActive }) => isActive ? 'nav-active' : ''} >Lazy3</NavLink>
-            </li>
-          </ul>
-        </nav>
+            <ul>
+              {
+                //el item del map esta desestructurado
+                //seria algo como esto sino: route.to, route.name
+                routes.map(({ to, name }) => (
+                  <li key={to}>
+                    <NavLink to={to} className={({ isActive }) => isActive ? 'nav-active' : ''} >{name}</NavLink>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
 
-        <Routes>
-          <Route path="lazy1" element={<LazyPage1 />} />
-          <Route path="lazy2" element={<LazyPage2 />} />
-          <Route path="lazy3" element={<LazyPage3 />} />
+          <Routes>
+            {
+              routes.map(({ path, Component }, i) => (
+                <Route key={i} path={path} element={< Component />} />
+              ))
+            }
+            {/* Redirect */}
+            <Route path="/*" element={<Navigate to={"/lazy1"} replace />} />
+          </Routes>
 
-          {/* Redirect */}
-          <Route path="/*" element={<Navigate to="/lazy1" replace />} />
-        </Routes>
 
-
-      </div>
-    </BrowserRouter>
+        </div>
+      </BrowserRouter>
+    </Suspense>
   )
 };
+
+/*
+El Suspense es un componente de React, que envuelve toda mi App.
+Su objetivo es mostrar "algo" mientras cargan los componentes de forma peresoza.
+
+Lo que meto adentro del fallback es el componente o la etiqueta HTML que quiero mostrar
+mientras esperamos que cargue la ruta seleccionada.
+*/
