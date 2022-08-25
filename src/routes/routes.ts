@@ -4,6 +4,7 @@ Aca voy a manejar las rutas existentes de mi app.
 Voy a trabajar el manejo de rutas con LazyLoad
 */
 import {lazy} from 'react';
+import { NoLazy } from '../01-lazyload/pages/NoLazy';
 
 type JSXComponent = () =>  JSX.Element;
 
@@ -14,45 +15,30 @@ interface Route {
   name: string;
 }
 
-//Para hacer el siguiente import, tengo que hacer un "export default" dentro del componente
-const Lazy1 = lazy(() => import(/*webpackChunkName: "LazyPage1"*/"../01-lazyload/pages/LazyPage1"));
-const Lazy2 = lazy(() => import(/*webpackChunkName: "LazyPage2"*/"../01-lazyload/pages/LazyPage2"));
-const Lazy3 = lazy(() => import(/*webpackChunkName: "LazyPage3"*/"../01-lazyload/pages/LazyPage3"));
+//1
+const LazyLayout = lazy(() => import(/*webpackChunkName: "LazyLayout"*/"../01-lazyload/layout/LazyLayout"));
 
 export const routes: Route[] = [
   {
-    to: '/lazy1',
-    path: 'lazy1',
-    Component: Lazy1,
-    name: 'Lazy 1'
+    path: '/lazyload/*',//2
+    to: '/lazyload/',//3
+    Component: LazyLayout,
+    name: 'Lazy Layout'
   },
   {
-    to: '/lazy2',
-    path: 'lazy2',
-    Component: Lazy2,
-    name: 'Lazy 2'
+    path: 'no-lazy',
+    to: '/no-lazy',
+    Component: NoLazy,
+    name: 'No Lazy'
   },
-  {
-    to: '/lazy3',
-    path: 'lazy3',
-    Component: Lazy3,
-    name: 'Lazy 3'
-  }
 ]
 
 /*
   Aclaraciones:
-    El siguiente tipo de dato:
-    () => JSX.Element
-    Esto indica que es un componente de React.
+  
+  1 - Para hacer el siguiente import, tengo que hacer un "export default" dentro del componente
 
-    El siguiente tipo de dato:
-    React.LazyExoticComponent<() => JSX.Element>
-    Esto indica que es un componente de React con LazyLoad.
+  2 - Lazyload es parte de la ruta, todo lo que venga despues va a ser procesado por el path lazyload.
 
-  En el caso de la interface Route, 
-  el Componente, acepta ambos tipos de datos.
-
-  webpackChunkName => Esto es para identificar el componente que carga
-  dentro de Network, en el f12 del google chrome
+  3 - Para navegar, voy a navegar aca
 */
