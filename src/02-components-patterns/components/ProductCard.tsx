@@ -1,70 +1,39 @@
-import { ReactElement } from 'react';
+import { createContext } from 'react';
 
 import { useProduct } from '../hooks/useProduct';
 
 import styles from "../styles/styles.module.css";
-import noImage from "../assets/no-image.jpg";
 
-interface Props {
-  product: Product,
-  children?: ReactElement | ReactElement[]
-}
+import { ProductContextProps, ComponentProps as Props } from '../interfaces/interfaces';
+import { ProductImage } from './ProductImage';
+import { ProductTitle } from './ProductTitle';
+import { ProductButtons } from './ProductButtons';
 
-interface Product {
-  id: string;
-  title: string;
-  img?: string;
-}
 
-//Con ese parametro, hago que la imagen sea opcional
-//Un string vacio para un ternario es considerado que no tiene valor
-export const ProductImage = ({ img = "" }) => {
-  return (
-    <img className={styles.productImg} src={img ? img : noImage} alt="Product" />
-  )
-}
+//Creo el context para manejar la informacion entre componentes
+//El provider va a envolver a todos mis componentes hijos
+export const ProductContext = createContext({} as ProductContextProps);
+const { Provider } = ProductContext;
 
-//Este parametro es igual al de arriba, lo obligo a que venga el titulo
-export const ProductTitle = ({ title }: { title: string }) => {
-  return (
-    <span className={styles.productDescription}>
-      {title}
-    </span>
-  )
-}
-
-interface ProductButtonsProps {
-  increaseBy: (value: number) => void;
-  counter: number;
-}
-
-export const ProductButtons = ({ increaseBy, counter }: ProductButtonsProps) => {
-  return (
-    <div className={styles.buttonsContainer}>
-      <button onClick={() => increaseBy(-1)} className={styles.buttonMinus}>-</button>
-
-      <div className={styles.countLabel}>{counter}</div>
-
-      <button onClick={() => increaseBy(+1)} className={styles.buttonAdd}>+</button>
-    </div>
-  )
-}
 
 export const ProductCard = ({ children, product }: Props) => {
 
   const { counter, increaseBy } = useProduct();
 
   return (
-    <div className={styles.productCard}>
-
-      {children}
-
-      {/* <ProductImage img={product.img} />
-
-      <ProductTitle title={product.title} />
-
-      <ProductButtons counter={counter} increaseBy={increaseBy} /> */}
-
-    </div>
+    <Provider value={{
+      counter,
+      increaseBy,
+      product
+    }}>
+      <div className={styles.productCard}>
+        {children}
+      </div>
+    </Provider>
   )
 }
+
+//Esto es para trabajar con Compound Component Patterns
+ProductCard.Title = ProductTitle;
+ProductCard.Image = ProductImage;
+ProductCard.Buttons = ProductButtons;
