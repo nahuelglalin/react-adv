@@ -1,10 +1,12 @@
-import { ReactElement } from "react";
 
 //Props que van a manejar los componentes
-export interface ComponentProps {
-  product: Product,
-  children?: ReactElement | ReactElement[]
-}
+
+import { Props as ProductCardProps } from "../components/ProductCard";
+import {Props as ProductTitleProps} from "../components/ProductTitle"; 
+import {Props as ProductImageProps} from "../components/ProductImage"; 
+import {Props as ProductButtonsProps} from "../components/ProductImage"; 
+
+
 
 //Esta es la info que tendra cada Producto
 export interface Product {
@@ -23,11 +25,11 @@ export interface ProductContextProps {
 //Interfaz para el ProductCardHOC
 //Para trabajar con Compound Component Patterns
 export interface ProductCardHOCProps {
-  ({ children, product }: ComponentProps): JSX.Element;
-  Title: ({ title }: {title?: string }) => JSX.Element;
-  Image: ({ img }: {img?: string }) => JSX.Element;
-  Buttons: () => JSX.Element;
-}
+  ({ children, product }: ProductCardProps): JSX.Element;
+  Title: (Props: ProductTitleProps) => JSX.Element;
+  Image: (Props: ProductImageProps) => JSX.Element;
+  Buttons: (Props: ProductButtonsProps) => JSX.Element;
+}   
 /*
 Para saber los tipos de dato que puse aca, fui al index.ts de 
 ../components, y me pare sobre los tipos de datos de la
