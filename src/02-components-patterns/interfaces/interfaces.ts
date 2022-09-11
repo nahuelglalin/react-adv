@@ -30,6 +30,14 @@ export interface ProductCardHOCProps {
   Image: (Props: ProductImageProps) => JSX.Element;
   Buttons: (Props: ProductButtonsProps) => JSX.Element;
 }   
+
+//Argumentos que va a recibir el onChange
+export interface onChangeArgs {
+  product: Product;
+  count: number;
+}
+
+
 /*
 Para saber los tipos de dato que puse aca, fui al index.ts de 
 ../components, y me pare sobre los tipos de datos de la
