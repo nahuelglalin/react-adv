@@ -15,6 +15,7 @@ export interface Props {
   className?: any;
   style?: CSSProperties;
   onChange?: (args: onChangeArgs) => void;
+  value?: number;
 }
 
 //Creo el context para manejar la informacion entre componentes
@@ -23,12 +24,12 @@ export const ProductContext = createContext({} as ProductContextProps);
 const { Provider } = ProductContext;
 
 
-export const ProductCard = ({ children, product, className, style, onChange }: Props) => {
+export const ProductCard = ({ children, product, className, style, onChange, value }: Props) => {
 
   //Este state cambia el contador
   //el useProduct recibe por parametros la funcion onChange recida por params en el ProductCard,
   //y también el producto recibido en el mismo lugar.
-  const { counter, increaseBy } = useProduct({ onChange, product });
+  const { counter, increaseBy } = useProduct({ onChange, product, value });
 
   return (
     <Provider value={{

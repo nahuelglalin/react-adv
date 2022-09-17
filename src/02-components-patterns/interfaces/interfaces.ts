@@ -37,9 +37,14 @@ export interface onChangeArgs {
   count: number;
 }
 
-
 /*
 Para saber los tipos de dato que puse aca, fui al index.ts de 
 ../components, y me pare sobre los tipos de datos de la
 constante ProductCard
 */
+
+//Esta nueva interfaz, va a tener todas las propiedades del Product normal
+//pero ahora también va a tener una prop llamada count.
+export interface ProductInCart extends Product {
+  count?: number;
+}
