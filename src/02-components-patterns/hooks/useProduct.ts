@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { onChangeArgs, Product } from '../interfaces/interfaces';
 
 //Este es el objeto que tiene que recibir el hook useProduct
@@ -12,19 +12,9 @@ interface useProductsArgs {
 //Hook para trabajar sobre el ProductCard. Hace que cuando el usuario toca click para modiciar
 //el valor del contador, emita un valor
 export const useProduct = ( {onChange, product, value = 0}: useProductsArgs ) => {
-  const [counter, setCounter] = useState(value);
-
-  //transformo el conChange en un boolean. Googlear como funciona el doble !!
-  const isControlled = useRef<boolean>( !!onChange );
-  
+  const [counter, setCounter] = useState(value);  
 
   const increaseBy = (value: number) => {
-
-    //si mi componente SI recibe el param onChange, ejecuta esto
-    if (isControlled.current ){
-      return onChange!({count: value, product});
-    }
-
     //Esta lógica es para que el counter nunca sea menor a 0
     const newValue = Math.max(counter + value, 0)    
 
